@@ -233,21 +233,20 @@ function renderSummary() {
   const result = pickPrimaryAndSecondary(scores, model.dimensions);
   const personality = findPersonality(result.primary, result.secondary);
 
-  const title = personality?.title || "人格画像";
-  const rarity = personality?.rarity || "未知";
-  const quote = personality?.quote || "——";
-
-  const analysis = personality?.description || "暂无详细分析。";
-  const trigger = personality?.darkTrigger || "暂无相关场景。";
-  const reminder = personality?.kindReminder || "暂无额外提醒。";
-
-  // --- 【新增逻辑】检查是否解锁 ---
+  // --- 检查解锁 ---
   const isUnlocked = localStorage.getItem('isUnlocked') === 'true';
   const expiryTime = localStorage.getItem('expiryTime') || 0;
   const unlockedValid = isUnlocked && Date.now() < parseInt(expiryTime);
   const maskClass = unlockedValid ? "" : "blur-mask";
 
-  // --- 【新增逻辑】支付和输入框 HTML ---
+  const title = personality?.title || "人格画像";
+  const rarity = personality?.rarity || "未知";
+  const quote = personality?.quote || "——";
+  const analysis = personality?.description || "暂无详细分析。";
+  const trigger = personality?.darkTrigger || "暂无相关场景。";
+  const reminder = personality?.kindReminder || "暂无额外提醒。";
+
+  // --- 支付按钮组 ---
   const unlockUI = !unlockedValid ? `
     <div style="margin: 20px 0; padding: 20px; border: 1px solid var(--accent); border-radius: var(--radius); text-align: center;">
       <p style="margin-bottom: 15px;">精品解析 结果丰富 24h自动发货</p>
@@ -260,33 +259,37 @@ function renderSummary() {
     </div>
   ` : "";
 
-  // --- 修改后的返回值 ---
   return `
     <main class="view summary">
       <section class="result-hero">
-        <p>${escapeHtml(result.primary)} × ${escapeHtml(result.secondary)}</p>
+        <div class="${maskClass}">
+          <p>${escapeHtml(result.primary)} × ${escapeHtml(result.secondary)}</p>
+          <p>人格稀有度：${escapeHtml(rarity)}</p>
+        </div>
         <h1>${escapeHtml(title)}</h1>
-        <p>人格稀有度：${escapeHtml(rarity)}</p>
         <p style="margin-top: 10px; font-style: italic;">“${escapeHtml(quote)}”</p>
       </section>
 
-      <div class="${maskClass}">
-        <section class="card">
+      <section class="card">
+        <div class="${maskClass}">
           ${renderSpiderChart(scores)}
-        </section>
-        <h3>📝 核心分析</h3>
-        <section class="card">
-          <p>${escapeHtml(analysis)}</p>
-        </section>
-        <h3>🌑 暗黑场景激发</h3>
-        <section class="card">
-          <p>${escapeHtml(trigger)}</p>
-        </section>
-        <h3>💡 善意提醒</h3>
-        <section class="card">
-          <p>${escapeHtml(reminder)}</p>
-        </section>
-      </div>
+        </div>
+      </section>
+
+      <h3>📝 核心分析</h3>
+      <section class="card ${maskClass}">
+        <p>${escapeHtml(analysis)}</p>
+      </section>
+
+      <h3>🌑 暗黑场景激发</h3>
+      <section class="card ${maskClass}">
+        <p>${escapeHtml(trigger)}</p>
+      </section>
+
+      <h3>💡 善意提醒</h3>
+      <section class="card ${maskClass}">
+        <p>${escapeHtml(reminder)}</p>
+      </section>
 
       ${unlockUI}
 
