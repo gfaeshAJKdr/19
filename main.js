@@ -249,7 +249,7 @@ function renderSummary() {
   // --- 支付按钮组 ---
   const unlockUI = !unlockedValid ? `
     <div style="margin: 20px 0; padding: 20px; border: 1px solid var(--accent); border-radius: var(--radius); text-align: center;">
-      <p style="margin-bottom: 15px;">精品解析 结果丰富 24h自动发货</p>
+      <p style="margin-bottom: 15px;">支付0.99 查看完整精品解析 丰富结果 24h自动发货</p>
       <button class="button" onclick="window.location.href='这里填闲鱼商品链接'">闲鱼获取：支付宝付款</button>
       <button class="button secondary" style="margin-top:10px" onclick="window.location.href='这里填闲鱼小程序链接'">微信小程序：微信付款</button>
       <div style="margin-top: 15px;">
@@ -353,22 +353,6 @@ function bindEvents() {
 }
 
 async function bootstrap() {
-  // ==========================================
-  // 48 小时自动过期逻辑 (基于浏览器缓存)
-  // ==========================================
-  const duration = 48 * 60 * 60 * 1000;
-  let firstOpenTime = localStorage.getItem("my_link_open_time");
-
-  if (!firstOpenTime) {
-    firstOpenTime = Date.now();
-    localStorage.setItem("my_link_open_time", firstOpenTime);
-  }
-
-  if (Date.now() - firstOpenTime > duration) {
-    app.innerHTML = renderError("此专属链接已失效（超过 48 小时有效期限）。如需继续测试，请重新获取链接。");
-    return; 
-  }
-  // ==========================================
 
   bindEvents();
 
@@ -424,7 +408,6 @@ window.checkPassword = function() {
     localStorage.setItem('isUnlocked', 'true');
     // 记录过期时间 (48小时)
     localStorage.setItem('expiryTime', Date.now() + 48 * 60 * 60 * 1000);
-    alert("解锁成功！");
     location.reload(); // 自动刷新页面，内容就清晰了
   } else {
     alert("密码错误，请重新获取");
