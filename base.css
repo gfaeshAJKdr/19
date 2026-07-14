@@ -1,0 +1,338 @@
+:root {
+  color-scheme: dark;
+  --bg: #161414;
+  --surface: #211d1d;
+  --surface-strong: #2a2424;
+  --line: #3a3030;
+  --text: #f4eeee;
+  --muted: #aaa0a0;
+  --faint: #746b6b;
+  --accent: #8e2f37;
+  --accent-strong: #b84650;
+  --accent-soft: rgba(142, 47, 55, 0.18);
+  --warning: #d9b56f;
+  --radius: 8px;
+  --shadow: 0 18px 48px rgba(0, 0, 0, 0.26);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at 50% -10%, rgba(142, 47, 55, 0.18), transparent 34rem), var(--bg);
+  color: var(--text);
+}
+
+button {
+  font: inherit;
+}
+
+.app-shell {
+  width: min(100%, 520px);
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 28px 24px 112px;
+}
+
+.view {
+  animation: fade-in 240ms ease-out both;
+}
+
+.home {
+  min-height: calc(100vh - 140px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 26px;
+}
+
+.eyebrow {
+  margin: 0 0 12px;
+  color: var(--accent-strong);
+  font-size: 13px;
+  letter-spacing: 0;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(34px, 10vw, 48px);
+  line-height: 1.08;
+  letter-spacing: 0;
+}
+
+.subtitle {
+  margin: 18px 0 0;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.disclaimer {
+  margin: 0;
+  color: var(--faint);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, var(--surface-strong), var(--surface));
+  box-shadow: var(--shadow);
+  padding: 24px 32px; /* 已优化：增加了内边距 */
+}
+
+.home-card,
+.summary-card,
+.question-card {
+  padding: 20px;
+}
+
+.button {
+  width: 100%;
+  min-height: 52px;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--text);
+  cursor: pointer;
+  transition: transform 140ms ease, background 140ms ease, border-color 140ms ease;
+}
+
+.button:active {
+  transform: scale(0.985);
+}
+
+.button:hover {
+  background: var(--accent-strong);
+}
+
+.button.secondary {
+  background: transparent;
+  border-color: var(--line);
+  color: var(--muted);
+}
+
+.button.secondary:hover {
+  border-color: var(--accent);
+  color: var(--text);
+  background: var(--accent-soft);
+}
+
+.test-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  color: var(--muted);
+}
+
+.progress-text {
+  color: var(--text);
+  font-size: 15px;
+}
+
+.progress-track {
+  overflow: hidden;
+  width: 130px;
+  height: 4px;
+  border-radius: 999px;
+  background: #332b2b;
+}
+
+.progress-bar {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--accent-strong);
+  transition: width 220ms ease;
+}
+
+.question-label {
+  margin: 0 0 10px;
+  color: var(--accent-strong);
+  font-size: 13px;
+}
+
+.question-text {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.65;
+}
+
+.options {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.option {
+  width: 100%;
+  min-height: 58px;
+  padding: 14px 15px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.025);
+  color: var(--text);
+  text-align: left;
+  line-height: 1.55;
+  cursor: pointer;
+}
+
+.option.selected {
+  border-color: var(--accent-strong);
+  background: var(--accent-soft);
+}
+
+.option-key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  border-radius: 50%;
+  background: #332b2b;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.option.selected .option-key {
+  background: var(--accent);
+  color: var(--text);
+}
+
+.bottom-bar {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  z-index: 5;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  width: min(100%, 520px);
+  padding: 14px 18px calc(14px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--line);
+  background: rgba(22, 20, 20, 0.92);
+  backdrop-filter: blur(14px);
+  transform: translateX(-50%);
+}
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 92px;
+  z-index: 10;
+  width: calc(100% - 36px);
+  max-width: 484px;
+  padding: 12px 14px;
+  border: 1px solid rgba(217, 181, 111, 0.38);
+  border-radius: var(--radius);
+  background: rgba(45, 36, 27, 0.96);
+  color: var(--warning);
+  text-align: center;
+  transform: translateX(-50%);
+  animation: toast-in 180ms ease-out both;
+}
+
+.summary {
+  display: grid;
+  gap: 24px;
+  transition: filter 0.3s ease; /* 让模糊效果平滑过渡 */
+}
+
+/* 当我们给 summary 加上 .blur-mask 时，它就会变模糊 */
+.summary.blur-mask {
+  filter: blur(8px); 
+}
+
+.summary h3 {
+  margin: 10px 0 -12px 0; /* 已优化：增加标题间距 */
+  font-size: 16px;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.score-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.score-row {
+  display: grid;
+  grid-template-columns: 7.5em 1fr 2em;
+  gap: 10px;
+  align-items: center;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.score-meter {
+  height: 6px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #332b2b;
+}
+
+.score-meter span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--accent-strong);
+}
+
+.error-box {
+  padding: 16px;
+  border: 1px solid rgba(217, 181, 111, 0.38);
+  border-radius: var(--radius);
+  background: rgba(45, 36, 27, 0.8);
+  color: var(--warning);
+  line-height: 1.7;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translate(-50%, 8px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+@media (min-width: 720px) {
+  .app-shell { padding-top: 46px; }
+}
+
+.bottom-bar.single { grid-template-columns: 1fr; }
+.result-hero { padding: 8px 2px 2px; }
+
+.spider-wrap {
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto;
+  aspect-ratio: 1;
+  transition: filter 0.3s ease; /* 增加平滑度 */
+}
+
+.spider-chart { display: block; width: 100%; height: 100%; }
+.spider-grid { fill: none; stroke: rgba(244, 238, 238, 0.12); stroke-width: 1; }
+.spider-axis { stroke: rgba(244, 238, 238, 0.1); stroke-width: 1; }
+.spider-area { fill: rgba(184, 70, 80, 0.26); stroke: none; transform-origin: center; animation: chart-grow 900ms ease-out both; }
+.spider-line { fill: none; stroke: var(--accent-strong); stroke-width: 2.2; stroke-linejoin: round; stroke-linecap: round; transform-origin: center; animation: chart-grow 900ms ease-out both; }
+.spider-label { fill: var(--muted); font-size: 10px; }
+
+@keyframes chart-grow {
+  from { opacity: 0; transform: scale(0.72); }
+  to { opacity: 1; transform: scale(1); }
+}
+/* 添加这部分到 CSS 最底部 */
+.blur-mask {
+  filter: blur(8px); /* 模糊程度，数值越大越模糊 */
+  pointer-events: none; /* 让鼠标穿透，点击不到下面的内容 */
+  user-select: none; /* 禁止复制文字 */
+}
