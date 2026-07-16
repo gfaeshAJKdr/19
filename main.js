@@ -246,15 +246,22 @@ function renderSummary() {
   const trigger = personality?.darkTrigger || "暂无相关场景。";
   const reminder = personality?.kindReminder || "暂无额外提醒。";
 
-  // --- 支付按钮组 ---
+  // --- 支付提示框的 HTML ---
   const unlockUI = !unlockedValid ? `
     <div style="margin: 20px 0; padding: 20px; border: 1px solid var(--accent); border-radius: var(--radius); text-align: center;">
-      <p style="margin-bottom: 15px;">支付0.99 查看完整精品解析 丰富结果 24h自动发货</p>
-      <button class="button" onclick="window.location.href='这里填闲鱼商品链接'">闲鱼获取：支付宝付款</button>
-      <button class="button secondary" style="margin-top:10px" onclick="window.location.href='这里填闲鱼小程序链接'">微信小程序：微信付款</button>
-      <div style="margin-top: 15px;">
-        <input type="text" id="passInput" placeholder="请输入5位密码" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--line); background: var(--surface);">
-        <button class="button" style="margin-top:10px" onclick="checkPassword()">解锁结果</button>
+      <p style="margin-bottom: 15px;">精品解析 结果丰富 24h自动发货</p>
+      
+      <button class="button" onclick="window.location.href='https://m.tb.cn/h.80olCSY?tk=lZF8grDanC1'">
+        闲鱼获取：支付宝付款
+      </button>
+      
+      <button class="button secondary" style="margin-top:10px" onclick="window.location.href='这里填你的闲鱼小程序商品链接'">
+        微信小程序：微信付款
+      </button>
+
+      <div style="margin-top: 20px;">
+        <input type="text" id="passInput" placeholder="请输入7位密码" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--line); background: var(--surface);">
+        <button class="button" style="margin-top:10px" onclick="checkPassword()">验证并解锁</button>
       </div>
     </div>
   ` : "";
@@ -401,7 +408,7 @@ bootstrap();
 window.checkPassword = function() {
   const input = document.getElementById('passInput').value;
   // 这里是你的密码库，以后想改密码直接改引号里的内容就行
-  const validPasswords = ['88888', '66666', '99999']; 
+  const validPasswords = ['8Kx9Vz2']; 
 
   if (validPasswords.includes(input)) {
     // 写入“已支付”的标记
