@@ -252,15 +252,17 @@ function renderSummary() {
       <p style="margin-bottom: 15px;">精品解析 结果丰富 24h自动发货</p>
       
       <button class="button" onclick="window.location.href='https://m.tb.cn/h.80olCSY?tk=lZF8grDanC1'">
-        闲鱼获取：支付宝付款
-      </button>
-      
-      <button class="button secondary" style="margin-top:10px" onclick="window.location.href='这里填你的闲鱼小程序商品链接'">
-        微信小程序：微信付款
+        闲鱼App：支付宝付款
       </button>
 
+      <div id="wxArea" style="margin-top: 15px;">
+        <button class="button secondary" onclick="showWxLink()">
+          微信小程序：点击获取购买链接
+        </button>
+      </div>
+
       <div style="margin-top: 20px;">
-        <input type="text" id="passInput" placeholder="请输入7位密码" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--line); background: var(--surface);">
+        <input type="text" id="passInput" placeholder="请输入密钥" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--line); background: var(--surface);">
         <button class="button" style="margin-top:10px" onclick="checkPassword()">验证并解锁</button>
       </div>
     </div>
@@ -419,4 +421,16 @@ window.checkPassword = function() {
   } else {
     alert("密码错误，请重新获取");
   }
+};
+
+window.showWxLink = function() {
+  const wxArea = document.getElementById('wxArea');
+  const link = "#小程序://闲鱼/qQ8e5llwOi0zrSr";
+  
+  wxArea.innerHTML = `
+    <div style="background: var(--surface); padding: 10px; border-radius: var(--radius); border: 1px dashed var(--accent);">
+      <p style="font-size: 13px; margin-bottom: 5px;">请长按下方链接复制，在微信粘贴发送给好友即可打开：</p>
+      <input type="text" value="${link}" readonly style="width: 100%; text-align: center; border: none; background: transparent; color: var(--accent); font-weight: bold;">
+    </div>
+  `;
 };
