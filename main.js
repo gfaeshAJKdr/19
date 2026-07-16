@@ -1,3 +1,21 @@
+// --- 这个函数专门负责检查 48 小时是否过期 ---
+function checkUnlockStatus() {
+  const isUnlocked = localStorage.getItem('isUnlocked') === 'true';
+  const expiryTime = localStorage.getItem('expiryTime');
+  
+  if (isUnlocked && expiryTime) {
+    // 逻辑：如果当前时间 (Date.now()) 已经大于设定的过期时间，说明过期了
+    if (Date.now() > parseInt(expiryTime)) {
+      // 过期了：把这两个存储记录全部删掉，还原现场
+      localStorage.removeItem('isUnlocked');
+      localStorage.removeItem('expiryTime');
+      return false; // 返回“过期了，需要重新输入”
+    }
+    return true; // 还没过期，依然是“已解锁”状态
+  }
+  return false; // 根本没解过锁，或者状态不存在
+}
+
 // 因为 main.js 在根目录，进 src 找文件夹
 import { loadState, saveState, clearState } from "./src/services/storage.js";
 import { loadJson } from "./src/utils/data.js";
@@ -234,9 +252,7 @@ function renderSummary() {
   const personality = findPersonality(result.primary, result.secondary);
 
   // --- 检查解锁 ---
-  const isUnlocked = localStorage.getItem('isUnlocked') === 'true';
-  const expiryTime = localStorage.getItem('expiryTime') || 0;
-  const unlockedValid = isUnlocked && Date.now() < parseInt(expiryTime);
+  const unlockedValid = window.checkUnlockStatus();
   const maskClass = unlockedValid ? "" : "blur-mask";
 
   const title = personality?.title || "人格画像";
@@ -434,4 +450,20 @@ window.showWxLink = function() {
       <input type="text" value="${link}" readonly style="width: 100%; text-align: center; border: none; background: transparent; color: var(--accent); font-weight: bold;">
     </div>
   `;
+};
+
+// --- 检查 48 小时是否过期 ---
+window.checkUnlockStatus = function() {
+  const isUnlocked = localStorage.getItem('isUnlocked') === 'true';
+  const expiryTime = localStorage.getItem('expiryTime');
+  
+  if (isUnlocked && expiryTime) {
+    if (Date.now() > parseInt(expiryTime)) {
+      localStorage.removeItem('isUnlocked');
+      localStorage.removeItem('expiryTime');
+      return false;
+    }
+    return true;
+  }
+  return false;
 };
