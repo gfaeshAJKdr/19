@@ -408,18 +408,19 @@ bootstrap();
 // --- 在 main.js 最后面追加以下代码 ---
 
 window.checkPassword = function() {
-  const input = document.getElementById('passInput').value;
-  // 这里是你的密码库，以后想改密码直接改引号里的内容就行
-  const validPasswords = ['8Kx9Vz2']; 
+  const input = document.getElementById('passInput').value.trim();
+  const validPassword = '8Kx9Vz2';
 
-  if (validPasswords.includes(input)) {
-    // 写入“已支付”的标记
+  if (input === validPassword) {
     localStorage.setItem('isUnlocked', 'true');
-    // 记录过期时间 (48小时)
-    localStorage.setItem('expiryTime', Date.now() + 48 * 60 * 60 * 1000);
-    location.reload(); // 自动刷新页面，内容就清晰了
+    
+    // 【新增这行】计算48小时后的过期时间（单位是毫秒）
+    const expiryTime = Date.now() + (48 * 60 * 60 * 1000);
+    localStorage.setItem('expiryTime', expiryTime);
+    
+    location.reload(); 
   } else {
-    alert("密码错误，请重新获取");
+    alert("密钥验证失败，请核对后重新输入。");
   }
 };
 
