@@ -183,6 +183,8 @@ function renderHome() {
       <div>
         <button class="button" data-action="start">${hasProgress ? "继续测试" : "开始测试"}</button>
         ${hasProgress ? `<button class="button secondary" data-action="restart" style="margin-top: 10px;">重新开始</button>` : ""}
+        
+        <button class="button secondary" style="margin-top: 10px; display: block; width: 100%;" onclick="showHistory()">查看过往记录</button>
       </div>
     </main>
   `;
@@ -267,6 +269,17 @@ function renderSummary() {
       </div>
     </div>
   ` : "";
+
+  // 【插入这一段】
+  const record = {
+    title: title,
+    analysis: analysis,
+    timestamp: new Date().toLocaleString()
+  };
+  const history = JSON.parse(localStorage.getItem('myHistory') || '[]');
+  history.push(record);
+  localStorage.setItem('myHistory', JSON.stringify(history));
+  // 【插入完毕】
 
   return `
     <main class="view summary">
@@ -433,4 +446,34 @@ window.showWxLink = function() {
       <input type="text" value="${link}" readonly style="width: 100%; text-align: center; border: none; background: transparent; color: var(--accent); font-weight: bold;">
     </div>
   `;
+};
+
+// --- 这个函数专门负责调取并显示过往测试记录 ---
+window.showHistory = function() {
+  const history = JSON.parse(localStorage.getItem('myHistory') || '[]');
+  
+  if (history.length === 0) {
+    alert("还没测过哦，快去测一次吧！");
+    return;
+  }
+
+  // 开始拼接页面内容
+  let html = `<main class="view"><h2 style="text-align:center">📜 过往测试记录</h2>`;
+  
+  // 遍历每一条记录
+  history.forEach((r) => {
+    html += `
+      <div class="card" style="margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 8px;">
+        <h3 style="margin: 0 0 10px 0;">${r.title}</h3>
+        <p style="font-size: 12px; color: #888;">测试时间：${r.timestamp}</p>
+        <p style="margin-top: 10px; line-height: 1.6;">${r.analysis}</p>
+      </div>
+    `;
+  });
+  
+  // 添加一个“返回”按钮
+  html += `<button class="button" style="width:100%" onclick="location.reload()">返回首页</button></main>`;
+  
+  // 覆盖当前网页内容
+  document.body.innerHTML = html;
 };
